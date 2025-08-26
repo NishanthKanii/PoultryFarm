@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:farm_ui": "node dist/farm_ui/server/server.mjs",
-    "deploy": "ng deploy --base-href=/PoultryFarm/"
+    "deploy": "ng build --configuration production && gh-pages -d dist/farm_ui/browser -b gh-pages"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +35,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
     "angular-cli-ghpages": "^2.0.3",
+    "gh-pages": "^6.3.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
