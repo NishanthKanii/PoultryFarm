@@ -18,61 +18,34 @@ export interface GalleryImage {
 })
 export class GalleryComponent implements OnInit {
   
-  // Sample images - replace with API call in future
+  // Sample images - using placeholder images that exist
   images: GalleryImage[] = [
     {
       id: 1,
-      src: 'assets/images/gallery/chicken-1.jpg',
-      alt: 'Healthy chicken in farm',
-      title: 'Healthy Farm Chickens',
-      category: 'chickens',
-      description: 'Our healthy chickens enjoying the farm environment',
+      src: 'assets/farmLocation.png',
+      alt: 'Farm location map',
+      title: 'Our Farm Location',
+      category: 'farm',
+      description: 'Map showing our farm location',
       date: '2024-01-15'
     },
     {
       id: 2,
-      src: 'assets/images/gallery/farm-1.jpg',
-      alt: 'Farm landscape',
-      title: 'Farm Landscape',
+      src: 'assets/farmLocation.png',
+      alt: 'Farm overview',
+      title: 'Farm Overview',
       category: 'farm',
-      description: 'Beautiful view of our farm during sunset',
+      description: 'Overview of our farm operations',
       date: '2024-01-10'
     },
     {
       id: 3,
-      src: 'assets/images/gallery/eggs-1.jpg',
-      alt: 'Fresh farm eggs',
-      title: 'Fresh Farm Eggs',
-      category: 'products',
-      description: 'Fresh eggs collected daily from our farm',
-      date: '2024-01-12'
-    },
-    {
-      id: 4,
-      src: 'assets/images/gallery/equipment-1.jpg',
-      alt: 'Farm equipment',
-      title: 'Modern Farm Equipment',
-      category: 'equipment',
-      description: 'State-of-the-art equipment for efficient farming',
-      date: '2024-01-08'
-    },
-    {
-      id: 5,
-      src: 'assets/images/gallery/workers-1.jpg',
-      alt: 'Farm workers',
-      title: 'Our Dedicated Team',
-      category: 'team',
-      description: 'Hardworking team ensuring quality care',
-      date: '2024-01-05'
-    },
-    {
-      id: 6,
-      src: 'assets/images/gallery/facility-1.jpg',
-      alt: 'Farm facility',
-      title: 'Modern Farm Facility',
+      src: 'assets/farmLocation.png',
+      alt: 'Farm facilities',
+      title: 'Farm Facilities',
       category: 'facility',
-      description: 'Clean and modern facilities for optimal conditions',
-      date: '2024-01-03'
+      description: 'Our modern farm facilities',
+      date: '2024-01-12'
     }
   ];
 
@@ -87,6 +60,7 @@ export class GalleryComponent implements OnInit {
 
   ngOnInit() {
     this.filteredImages = [...this.images];
+    console.log('Gallery component initialized with', this.images.length, 'images');
   }
 
   // Handle image loading errors in gallery grid

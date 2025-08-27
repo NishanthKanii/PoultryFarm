@@ -92,6 +92,15 @@ export class HomeComponent {
   private smoothScrollTo(targetPosition: number, duration: number) {
     if (!isPlatformBrowser(this.platformId)) return;
     
+    // For very short durations, use instant scroll for better responsiveness
+    if (duration <= 300) {
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+      return;
+    }
+    
     const startPosition = window.pageYOffset || document.documentElement.scrollTop;
     const distance = targetPosition - startPosition;
     let startTime: number | null = null;
@@ -101,9 +110,9 @@ export class HomeComponent {
       const timeElapsed = currentTime - startTime;
       const progress = Math.min(timeElapsed / duration, 1);
       
-      // Enhanced easing function for ultra-smooth animation
-      const easeInOutQuart = (t: number) => t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
-      const easedProgress = easeInOutQuart(progress);
+      // Simplified easing for better performance
+      const easeInOutQuad = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      const easedProgress = easeInOutQuad(progress);
       
       // Use requestAnimationFrame for smooth scrolling
       window.scrollTo({
@@ -122,7 +131,8 @@ export class HomeComponent {
   // Handle navigation link clicks for smooth scrolling
   onNavLinkClick(event: Event, sectionId: string) {
     event.preventDefault();
-    this.scrollToSection(sectionId);
+    console.log(`Navigation link clicked: ${sectionId}`);
+    this.scrollToSectionWithDuration(sectionId, 100); // Very fast response for navigation
   }
 
   // Smooth scroll to top
@@ -131,13 +141,28 @@ export class HomeComponent {
   }
 
   // Enhanced smooth scrolling with different durations
-  scrollToSectionWithDuration(sectionId: string, duration: number = 1000) {
-    if (!isPlatformBrowser(this.platformId)) return;
+  scrollToSectionWithDuration(sectionId: string, duration: number = 300) {
+    if (!isPlatformBrowser(this.platformId)) {
+      console.log('Not in browser platform, skipping scroll');
+      return;
+    }
     
     const element = document.getElementById(sectionId);
     if (element) {
+      console.log(`Scrolling to section: ${sectionId}`);
       const targetPosition = element.offsetTop - 80;
-      this.smoothScrollTo(targetPosition, duration);
+      
+      // For very fast scrolling, use instant scroll
+      if (duration <= 100) {
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      } else {
+        this.smoothScrollTo(targetPosition, duration);
+      }
+    } else {
+      console.log(`Section element not found: ${sectionId}`);
     }
   }
 

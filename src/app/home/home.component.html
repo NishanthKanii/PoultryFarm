@@ -42,7 +42,8 @@
     <p class="lead mb-4 mx-auto" style="max-width: 800px;">
       {{ farmInfo.description }}
     </p>
-    <button (click)="scrollToSection('growth')" class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-semibold">
+    <button (click)="scrollToSectionWithDuration('growth', 300)"
+      class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-semibold">
       See Our Growth Process
     </button>
   </div>
@@ -71,7 +72,8 @@
 
       <!-- Stage 2: Young Chicken -->
       <div class="col-md-3">
-        <div class="growth-stage bg-orange bg-opacity-10 rounded-4 p-4 text-center border border-orange mobile-margin-top">
+        <div
+          class="growth-stage bg-orange bg-opacity-10 rounded-4 p-4 text-center border border-orange mobile-margin-top">
           <div class="display-1 mb-3">🐤</div>
           <h3 class="h3 fw-bold mb-2">Week 2-8</h3>
           <h4 class="h5 fw-semibold mb-2">Growing Chicks</h4>
@@ -81,7 +83,8 @@
 
       <!-- Stage 3: Adolescent -->
       <div class="col-md-3">
-        <div class="growth-stage bg-danger bg-opacity-10 rounded-4 p-4 text-center border border-danger mobile-margin-top">
+        <div
+          class="growth-stage bg-danger bg-opacity-10 rounded-4 p-4 text-center border border-danger mobile-margin-top">
           <div class="display-1 mb-3">🐓</div>
           <h3 class="h3 fw-bold mb-2">Week 9-16</h3>
           <h4 class="h5 fw-semibold mb-2">Young Adults</h4>
@@ -91,7 +94,8 @@
 
       <!-- Stage 4: Full Grown -->
       <div class="col-md-3">
-        <div class="growth-stage bg-success bg-opacity-10 rounded-4 p-4 text-center border border-success mobile-margin-top">
+        <div
+          class="growth-stage bg-success bg-opacity-10 rounded-4 p-4 text-center border border-success mobile-margin-top">
           <div class="display-1 mb-3">🐔</div>
           <h3 class="h3 fw-bold mb-2">Week 17+</h3>
           <h4 class="h5 fw-semibold mb-2">Mature Chickens</h4>
@@ -119,7 +123,8 @@
             <h3 class="h3 fw-bold text-dark mb-3">Day-Old Chicks</h3>
             <p class="text-muted mb-4 small">Perfect for starting your own flock. Healthy, vaccinated chicks ready to
               grow.</p>
-            <button (click)="scrollToSection('contact')" class="btn btn-primary px-4 py-2 rounded-pill">
+            <button (click)="scrollToSectionWithDuration('contact', 300)"
+              class="btn btn-primary px-4 py-2 rounded-pill">
               Contact Us
             </button>
           </div>
@@ -133,7 +138,8 @@
             <div class="display-1 mb-3">🐓</div>
             <h3 class="h3 fw-bold text-dark mb-3">Young Chickens</h3>
             <p class="text-muted mb-4 small">8-16 week old chickens, nearly mature and ready for your farm.</p>
-            <button (click)="scrollToSection('contact')" class="btn btn-primary px-4 py-2 rounded-pill">
+            <button (click)="scrollToSectionWithDuration('contact', 300)"
+              class="btn btn-primary px-4 py-2 rounded-pill">
               Contact Us
             </button>
           </div>
@@ -147,7 +153,8 @@
             <div class="display-1 mb-3">🐔</div>
             <h3 class="h3 fw-bold text-dark mb-3">Mature Chickens</h3>
             <p class="text-muted mb-4 small">Fully grown, healthy chickens perfect for meat or egg production.</p>
-            <button (click)="scrollToSection('contact')" class="btn btn-primary px-4 py-2 rounded-pill">
+            <button (click)="scrollToSectionWithDuration('contact', 300)"
+              class="btn btn-primary px-4 py-2 rounded-pill">
               Contact Us
             </button>
           </div>
@@ -211,7 +218,7 @@
         <div class="d-flex flex-column gap-3">
           <div class="imgDev">
             <div class="location-image-container" (click)="openLocation()">
-              <img class="mapImg" src="../../assets/farmLocation.png" alt="location">
+              <img class="mapImg" src="assets/farmLocation.png" alt="location">
               <div class="location-overlay">
                 <span class="location-label">📍 Click to open location</span>
               </div>
