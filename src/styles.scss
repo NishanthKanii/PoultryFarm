@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Global smooth scrolling for all components */
+html {
+  scroll-behavior: smooth !important;
+  scroll-padding-top: 80px;
+}
+
+body {
+  scroll-behavior: smooth !important;
+}
+
+* {
+  scroll-behavior: smooth !important;
+}
+
+/* Enhanced smooth scrolling for production */
+html, body {
+  scroll-behavior: smooth !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure smooth scrolling works on all elements */
+a[href^="#"], 
+button[onclick*="scroll"], 
+.nav-link,
+.btn {
+  scroll-behavior: smooth !important;
+}

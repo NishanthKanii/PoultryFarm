@@ -145,16 +145,30 @@ textarea.farm-bg:focus{
 
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
   scroll-padding-top: 80px;
 }
 
 body {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
 }
 
 * {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
+}
+
+/* Enhanced smooth scrolling for production */
+html, body {
+  scroll-behavior: smooth !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure smooth scrolling works on all elements */
+a[href^="#"], 
+button[onclick*="scroll"], 
+.nav-link,
+.btn {
+  scroll-behavior: smooth !important;
 }
 
 a, button, .btn {
