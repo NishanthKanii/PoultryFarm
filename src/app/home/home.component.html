@@ -10,24 +10,21 @@
     <div class="navbar-nav d-flex flex-row justify-content-end flex-grow-1">
       <ul class="navbar-nav d-flex flex-row gap-3">
         <li class="nav-item pr-3">
-          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'home'" href="#home"
-            (click)="onNavLinkClick($event, 'home')">Home</a>
+          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'home'" (click)="scrollToSection('home')" style="cursor: pointer;">Home</a>
         </li>
         <li class="nav-item pr-3">
-          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'growth'" href="#growth"
-            (click)="onNavLinkClick($event, 'growth')">Growth Process</a>
+          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'growth'" (click)="scrollToSection('growth')" style="cursor: pointer;">Growth
+            Process</a>
         </li>
         <li class="nav-item pr-3">
-          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'products'" href="#products"
-            (click)="onNavLinkClick($event, 'products')">Our Chickens</a>
+          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'products'" (click)="scrollToSection('products')" style="cursor: pointer;">Our
+            Chickens</a>
         </li>
         <li class="nav-item pr-3">
-          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'about'" href="#about"
-            (click)="onNavLinkClick($event, 'about')">About Us</a>
+          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'about'" (click)="scrollToSection('about')" style="cursor: pointer;">About Us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'contact'" href="#contact"
-            (click)="onNavLinkClick($event, 'contact')">Contact</a>
+          <a class="nav-link text-dark pb-0" [class.active]="activeSection === 'contact'" (click)="scrollToSection('contact')" style="cursor: pointer;">Contact</a>
         </li>
       </ul>
     </div>
@@ -42,8 +39,7 @@
     <p class="lead mb-4 mx-auto" style="max-width: 800px;">
       {{ farmInfo.description }}
     </p>
-    <button (click)="scrollToSectionWithDuration('growth', 300)"
-      class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-semibold">
+    <button class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-semibold" (click)="scrollToSection('growth')">
       See Our Growth Process
     </button>
   </div>
@@ -123,8 +119,7 @@
             <h3 class="h3 fw-bold text-dark mb-3">Day-Old Chicks</h3>
             <p class="text-muted mb-4 small">Perfect for starting your own flock. Healthy, vaccinated chicks ready to
               grow.</p>
-            <button (click)="scrollToSectionWithDuration('contact', 300)"
-              class="btn btn-primary px-4 py-2 rounded-pill">
+            <button class="btn btn-primary px-4 py-2 rounded-pill" (click)="scrollToSection('contact')">
               Contact Us
             </button>
           </div>
@@ -138,8 +133,7 @@
             <div class="display-1 mb-3">🐓</div>
             <h3 class="h3 fw-bold text-dark mb-3">Young Chickens</h3>
             <p class="text-muted mb-4 small">8-16 week old chickens, nearly mature and ready for your farm.</p>
-            <button (click)="scrollToSectionWithDuration('contact', 300)"
-              class="btn btn-primary px-4 py-2 rounded-pill">
+            <button class="btn btn-primary px-4 py-2 rounded-pill" (click)="scrollToSection('contact')">
               Contact Us
             </button>
           </div>
@@ -153,8 +147,7 @@
             <div class="display-1 mb-3">🐔</div>
             <h3 class="h3 fw-bold text-dark mb-3">Mature Chickens</h3>
             <p class="text-muted mb-4 small">Fully grown, healthy chickens perfect for meat or egg production.</p>
-            <button (click)="scrollToSectionWithDuration('contact', 300)"
-              class="btn btn-primary px-4 py-2 rounded-pill">
+            <button class="btn btn-primary px-4 py-2 rounded-pill" (click)="scrollToSection('contact')">
               Contact Us
             </button>
           </div>
@@ -218,7 +211,7 @@
         <div class="d-flex flex-column gap-3">
           <div class="imgDev">
             <div class="location-image-container" (click)="openLocation()">
-              <img class="mapImg" src="assets/farmLocation.png" alt="location">
+              <img class="mapImg" src="/assets/farmLocation.png" alt="location">
               <div class="location-overlay">
                 <span class="location-label">📍 Click to open location</span>
               </div>
@@ -288,16 +281,12 @@
       <div class="col-md-3">
         <h5 class="fw-semibold mb-3">Quick Links</h5>
         <ul class="list-unstyled">
-          <li class="mb-2"><a href="#home" class="text-muted text-decoration-none hover-text-white"
-              (click)="onNavLinkClick($event, 'home')">Home</a></li>
-          <li class="mb-2"><a href="#growth" class="text-muted text-decoration-none hover-text-white"
-              (click)="onNavLinkClick($event, 'growth')">Growth Process</a>
+          <li class="mb-2"><a (click)="scrollToSection('home')" class="text-muted text-decoration-none hover-text-white" style="cursor: pointer;">Home</a></li>
+          <li class="mb-2"><a (click)="scrollToSection('growth')" class="text-muted text-decoration-none hover-text-white" style="cursor: pointer;">Growth Process</a>
           </li>
-          <li class="mb-2"><a href="#products" class="text-muted text-decoration-none hover-text-white"
-              (click)="onNavLinkClick($event, 'products')">Our Chickens</a>
+          <li class="mb-2"><a (click)="scrollToSection('products')" class="text-muted text-decoration-none hover-text-white" style="cursor: pointer;">Our Chickens</a>
           </li>
-          <li class="mb-2"><a href="#about" class="text-muted text-decoration-none hover-text-white"
-              (click)="onNavLinkClick($event, 'about')">About Us</a></li>
+          <li class="mb-2"><a (click)="scrollToSection('about')" class="text-muted text-decoration-none hover-text-white" style="cursor: pointer;">About Us</a></li>
         </ul>
       </div>
       <div class="col-md-3">
@@ -322,6 +311,6 @@
 </footer>
 
 <!-- Scroll to Top Button -->
-<button *ngIf="showScrollToTop" (click)="scrollToTop()" class="scroll-to-top-btn" title="Scroll to top">
+<button *ngIf="showScrollToTop" class="scroll-to-top-btn" title="Scroll to top" (click)="scrollToTop()">
   <span>↑</span>
 </button>

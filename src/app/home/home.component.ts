@@ -1,5 +1,6 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, HostListener, OnInit } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { ViewportScroller } from '@angular/common';
 import { FarmInfoService } from '../services/farm-info.service';
 
 @Component({
@@ -7,10 +8,10 @@ import { FarmInfoService } from '../services/farm-info.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   // Farm information from service
   farmInfo = this.farmInfoService.getFarmInfo();
-  
+
   contactForm = {
     name: '',
     email: '',
@@ -24,145 +25,103 @@ export class HomeComponent {
 
   // Scroll to top functionality
   showScrollToTop = false;
-  
+
   // Active navigation tracking
   activeSection = 'home';
 
+  // Section offsets for active tracking
+  private sectionOffsets: { [key: string]: number } = {};
+
   constructor(
     private farmInfoService: FarmInfoService,
+    private viewportScroller: ViewportScroller,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     // Only set page title and setup scroll listener in browser
     if (isPlatformBrowser(this.platformId)) {
       // Set the page title from service
       document.title = this.farmInfoService.getPageTitle();
-      
-      // Add scroll event listener for scroll-to-top button
-      this.setupScrollListener();
     }
   }
 
-  private setupScrollListener() {
+  ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      window.addEventListener('scroll', () => {
-        this.showScrollToTop = window.pageYOffset > 300;
-        this.updateActiveSection();
-      });
+      // Calculate section offsets after view initialization
+      setTimeout(() => {
+        this.calculateSectionOffsets();
+      }, 100);
     }
   }
 
-  private updateActiveSection() {
-    if (!isPlatformBrowser(this.platformId)) return;
-    
+  // Listen to scroll events to update active section
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateActiveSection();
+      this.updateScrollToTopButton();
+    }
+  }
+
+  // Listen to window resize to recalculate offsets
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.calculateSectionOffsets();
+    }
+  }
+
+  // Calculate the offset of each section from the top
+  private calculateSectionOffsets() {
     const sections = ['home', 'growth', 'products', 'about', 'contact'];
-    const scrollPosition = window.pageYOffset + 100; // Offset for navbar
-
-    for (let i = sections.length - 1; i >= 0; i--) {
-      const sectionId = sections[i];
+    sections.forEach(sectionId => {
       const element = document.getElementById(sectionId);
-      
-      if (element && element.offsetTop <= scrollPosition) {
-        if (this.activeSection !== sectionId) {
-          this.activeSection = sectionId;
-        }
-        break;
+      if (element) {
+        this.sectionOffsets[sectionId] = element.offsetTop;
       }
+    });
+  }
+
+  // Update which section is currently active based on scroll position
+  private updateActiveSection() {
+    const scrollPosition = window.pageYOffset + 100; // Add offset for better detection
+    
+    // Find the current active section
+    let currentSection = 'home';
+    for (const [sectionId, offset] of Object.entries(this.sectionOffsets)) {
+      if (scrollPosition >= offset) {
+        currentSection = sectionId;
+      }
+    }
+    
+    if (this.activeSection !== currentSection) {
+      this.activeSection = currentSection;
     }
   }
 
+  // Update scroll to top button visibility
+  private updateScrollToTopButton() {
+    this.showScrollToTop = window.pageYOffset > 300;
+  }
+
+  // Smooth scroll to section
   scrollToSection(sectionId: string) {
-    if (!isPlatformBrowser(this.platformId)) return;
-    
-    const element = document.getElementById(sectionId);
-    if (element) {
-      // Get the current scroll position
-      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-      
-      // Get the target element position
-      const targetPosition = element.offsetTop - 80; // Offset for navbar height
-      
-      // Calculate the distance to scroll
-      const distance = targetPosition - currentScroll;
-      
-      // Smooth scroll with easing
-      this.smoothScrollTo(targetPosition, 1000); // 1000ms = 1 second
-    }
-  }
-
-  private smoothScrollTo(targetPosition: number, duration: number) {
-    if (!isPlatformBrowser(this.platformId)) return;
-    
-    // For very short durations, use instant scroll for better responsiveness
-    if (duration <= 300) {
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
-      return;
-    }
-    
-    const startPosition = window.pageYOffset || document.documentElement.scrollTop;
-    const distance = targetPosition - startPosition;
-    let startTime: number | null = null;
-
-    const animation = (currentTime: number) => {
-      if (startTime === null) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      
-      // Simplified easing for better performance
-      const easeInOutQuad = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-      const easedProgress = easeInOutQuad(progress);
-      
-      // Use requestAnimationFrame for smooth scrolling
-      window.scrollTo({
-        top: startPosition + distance * easedProgress,
-        behavior: 'auto' // We handle the behavior ourselves for better control
-      });
-      
-      if (timeElapsed < duration) {
-        requestAnimationFrame(animation);
+    if (isPlatformBrowser(this.platformId)) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        // Add offset to account for fixed navbar
+        const offset = 80;
+        const targetPosition = element.offsetTop - offset;
+        this.viewportScroller.scrollToPosition([0, targetPosition]);
+        this.activeSection = sectionId;
       }
-    };
-
-    requestAnimationFrame(animation);
+    }
   }
 
-  // Handle navigation link clicks for smooth scrolling
-  onNavLinkClick(event: Event, sectionId: string) {
-    event.preventDefault();
-    console.log(`Navigation link clicked: ${sectionId}`);
-    this.scrollToSectionWithDuration(sectionId, 100); // Very fast response for navigation
-  }
-
-  // Smooth scroll to top
+  // Scroll to top
   scrollToTop() {
-    this.smoothScrollTo(0, 800); // 800ms to top
-  }
-
-  // Enhanced smooth scrolling with different durations
-  scrollToSectionWithDuration(sectionId: string, duration: number = 300) {
-    if (!isPlatformBrowser(this.platformId)) {
-      console.log('Not in browser platform, skipping scroll');
-      return;
-    }
-    
-    const element = document.getElementById(sectionId);
-    if (element) {
-      console.log(`Scrolling to section: ${sectionId}`);
-      const targetPosition = element.offsetTop - 80;
-      
-      // For very fast scrolling, use instant scroll
-      if (duration <= 100) {
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      } else {
-        this.smoothScrollTo(targetPosition, duration);
-      }
-    } else {
-      console.log(`Section element not found: ${sectionId}`);
+    if (isPlatformBrowser(this.platformId)) {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      this.activeSection = 'home';
     }
   }
 
@@ -191,7 +150,6 @@ export class HomeComponent {
   // Open location in new tab
   openLocation() {
     if (!isPlatformBrowser(this.platformId)) return;
-    
     // You can replace this URL with your actual farm location
     const locationUrl = 'https://maps.app.goo.gl/qAn4EM3tkjaGCND47';
     window.open(locationUrl, '_blank');
